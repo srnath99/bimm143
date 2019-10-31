@@ -2,7 +2,7 @@
 title: "class 7 r function and packages"
 author: "Shilpa Nath"
 date: "10/22/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -148,12 +148,6 @@ hw <- read.csv(url, row.names=1)
 
 ```{r}
 apply(hw, 1, grade)
-```
-
-```{r}
-install.packages("BiocManager")
-library(BiocManager)
-install("rayshader")
 ```
 
 ```{r}
