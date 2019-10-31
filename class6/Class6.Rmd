@@ -1,0 +1,111 @@
+---
+title: "Class6 R Functions"
+author: "Shilpa Nath"
+date: "10/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#This is H1
+This is my work from class6 in **BIMM143**
+
+##This is h2
+
+###This is h3
+
+##Practice reading files (again...)
+
+```{r}
+
+plot(1:10)
+
+read.table("test1.txt")
+read.table("test2.txt")
+read.table("test3.txt")
+
+read.table("test1.txt", sep=",", header=TRUE)
+
+read.table("test2.txt", sep="$", header=TRUE)
+
+read.table("test3.txt", sep="", header=TRUE)
+
+name.of.function <- function(arg1, arg2) {
+ statements
+ return(something)
+}
+
+```
+
+```{r}
+add <- function(x, y=1) {
+ # Sum the input x and y
+ x + y
+}
+```
+
+```{r}
+add(1)
+```
+
+```{r}
+#add(5,5,5)
+add( c(1, 2, 3) )
+add( c(1, 2, 3), 4 )
+
+rescale <- function(x) {
+ rng <-range(x, na.rm = TRUE)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
+```{r}
+rescale(1:10)
+```
+
+
+```{r}
+rescale( c(1,2,NA,3,10) )
+```
+
+```{r}
+rescale3 <- function(x, na.rm=TRUE, plot=FALSE) {
+ rng <-range(x, na.rm=na.rm)
+ print("Hello")
+ answer <- (x - rng[1]) / (rng[2] - rng[1])
+ print("is it me you are looking for?")
+ if(plot) {
+ plot(answer, typ="b", lwd=4)
+ }
+ print("I can see it in ...")
+ return(answer)
+}
+```
+
+```{r}
+rescale3(1:10, plot=TRUE)
+```
+
+#Section2 of hands-on sheet
+
+Install the **bio3d** package for sequence and structure analysis
+```{r}
+#install.packages("bio3d")
+```
+
+```{r}
+library(bio3d)
+readprotein <- function(x) {
+sx <- read.pdb(x)
+sx.chainA <- trim.pdb(sx, chain="A", elety="CA")
+sx.b <- sx.chainA$atom$b
+plotb3(sx.b, sse=sx.chainA, typ="1", ylab="Bfactor")
+}
+```
+
+```{r}
+readprotein("4AKE")
+```
+
