@@ -2,7 +2,7 @@
 title: "Class6 R Functions"
 author: "Shilpa Nath"
 date: "10/17/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -105,7 +105,4 @@ plotb3(sx.b, sse=sx.chainA, typ="1", ylab="Bfactor")
 }
 ```
 
-```{r}
-readprotein("4AKE")
-```
 
