@@ -1,0 +1,223 @@
+---
+title: "class08"
+author: "Shilpa Nath"
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## K-means clustering 
+```{r}
+# Generate some example data for clustering
+tmp <- c(rnorm(30,-3), rnorm(30,3))
+x <- cbind(x=tmp, y=rev(tmp))
+plot(x)
+```
+
+Use the kmeans() function setting k to 2 and nstart=20. 
+```{r}
+k <- kmeans(x, centers=2, nstart=20)
+```
+Inspect/print the results
+```{r}
+k
+```
+How many points are in each cluster? = 
+What ‘component’ of your result object details --> cluster size?, cluster assignment/membership?, cluster center?
+```{r}
+k$size
+k$cluster
+k$centers
+```
+Plot x colored by the kmeans cluster assignment and add cluster centers as blue points
+```{r}
+plot(x, col=k$cluster)
+points(k$centers, col="blue", pch=15)
+```
+
+
+## Hierarchical clustering in R
+The 'hclust()' function requiress a distance matrix as input. You can get this from the 'dist()' function 
+```{r}
+# First we need to calculate point (dis)similarity
+# as the Euclidean distance between observations
+dist_matrix <- dist(x)
+
+# The hclust() function returns a hierarchical
+# clustering model
+hc <- hclust(d = dist_matrix)
+
+# the print method is not so useful here
+hc
+
+```
+
+```{r}
+#draws a dendogram
+plot(hc)
+abline(h=6, col="red")
+cutree(hc, h=6)
+#cut by height
+```
+
+
+```{r}
+# Step 1. Generate some example data for clustering
+x <- rbind(
+ matrix(rnorm(100, mean=0, sd = 0.3), ncol = 2), # c1
+ matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2), # c2
+ matrix(c(rnorm(50, mean = 1, sd = 0.3), # c3
+ rnorm(50, mean = 0, sd = 0.3)), ncol = 2))
+
+colnames(x) <- c("x", "y")
+
+# Step 2. Plot the data without clustering
+plot(x)
+
+# Step 3. Generate colors for known clusters
+# (just so we can compare to hclust results)
+col <- as.factor( rep(c("c1","c2","c3"), each=50) )
+
+plot(x, col=col)
+```
+
+Q. Use the dist(), hclust(), plot() and cutree()
+ functions to return 2 and 3 clusters
+Q. How does this compare to your known 'col' groups?
+```{r}
+kmeans(x, centers=3, nstart=20)
+hclust(dist(x))
+#clustering
+hc <- hclust(dist(x))
+#draw tree
+plot(hc)
+abline(h=2, col="red")
+#cut the tree into clusters/groups
+cutree(hc, h=3)
+grps <- cutree(hc, h=3)
+grps
+```
+
+Plot the data colored by their hclust results with k=3
+
+
+How many points in each cluster
+```{r}
+table(grps)
+```
+
+Cross-tabulate i.i compare out clustering result with the known answer
+```{r}
+table(grps, col)
+```
+
+## Principal Component Analysis 
+Read some example gene expresssion data
+```{r}
+mydata <- read.csv("https://tinyurl.com/expression-CSV",
+ row.names=1)
+head(mydata) 
+#how many genes are there in this dataset 
+dim(mydata)
+nrow(mydata)
+```
+
+PCA with the **prcomp()** function. 
+```{r}
+## lets do PCA, but by first transposing the matrix using function t()
+pca <- prcomp(t(mydata), scale=TRUE) 
+
+## See what is returned by the prcomp() function
+attributes(pca)
+
+## A basic PC1 vs PC2 2-D plot
+plot(pca$x[,1], pca$x[,2]) 
+
+## Variance captured per PC
+pca.var <- pca$sdev^2 
+
+## Precent variance is often more informative to look at
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100, 1) 
+
+pca.var.per
+```
+
+```{r}
+barplot(pca.var.per, main="Scree Plot",
+ xlab="Principal Component", ylab="Percent Variation")
+
+## A vector of colors for wt and ko samples
+colvec <- colnames(mydata)
+colvec[grep("wt", colvec)] <- "red"
+colvec[grep("ko", colvec)] <- "blue"
+plot(pca$x[,1], pca$x[,2], col=colvec, pch=16,
+ xlab=paste0("PC1 (", pca.var.per[1], "%)"),
+ ylab=paste0("PC2 (", pca.var.per[2], "%)")) 
+```
+
+## PCA of UK food data
+```{r}
+x <- read.csv("UK_foods.csv")
+dim(x)
+head(x)
+```
+```{r}
+#fixing the display of the number of rows as here there is an additional x row that is unwanted
+rownames(x) <- x[,1]
+x <- x[,-1]
+head(x)
+#checking the dimensions again
+dim(x)
+
+#alternatively the following code will achieve the same result 
+#x <- read.csv("data/UK_foods.csv", row.names=1) head(x)
+```
+```{r}
+#plotting the data as a barlot to spot major difference and trends 
+barplot(as.matrix(x), beside=T, col=rainbow(nrow(x)))
+#the beside specification, which when false makes each bar of the plot correspond to a column of hieght rather than having different stacks 
+barplot(as.matrix(x), beside=FALSE, col=rainbow(nrow(x)))
+
+#how do we change te aforementioned plot to generate pairwise plots = the boxes with the country names are the axes on the side they correspond to
+pairs(x, col=rainbow(10), pch=16)
+```
+
+```{r}
+#now using PCA function prcomp()
+pca <- prcomp(t(x))
+summary(pca)
+
+#Plot PC1 vs PC2 
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(x))
+```
+
+
+
+
+
+
