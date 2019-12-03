@@ -1,0 +1,52 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages 
+```{r}
+library(GenomicDataCommons)
+library(TCGAbiolinks)
+library(maftools)
+```
+
+#Now lets check on GDC status
+```{r}
+status()
+```
+
+#The are four main sets of metadata that we can query
+```{r}
+projects <- getGDCprojects()
+head(projects)
+```
+
+#Moving onto cases()
+```{r}
+cases_by_project <- cases() %>%
+  facet("project.project_id") %>%
+  aggregations()
+head(cases_by_project)
+```
+
+```{r}
+x <- cases_by_project$project.project_id
+
+# Make a custom color vector for our plot
+colvec <- rep("lightblue", nrow(x))
+colvec[(x$key == "TCGA-PAAD")] <- "red"
+colvec 
+
+barplot(x$doc_count, names.arg=x$key, col=colvec, log="y", las=2)
+```
+
+```{r}
+# Plot with 'log' for y axis and rotate labels with 'las'
+#par(___)  
+barplot(___, names.arg=___, log="y", col=colvec, las=2)
+```
+
