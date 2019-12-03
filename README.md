@@ -11,4 +11,4 @@ This is my work for [BIMM 143 at UC San Diego](https://bioboot.github.io/bimm143
 - Class14: [Transcriptomics and the analysis of RNA-Seq data](https://github.com/srnath99/bimm143/blob/master/Lecture_14.Rmd)
 - Class15: [Genome annotation and the interpretation of gene lists](https://github.com/srnath99/bimm143/blob/master/class15.Rmd)
 - Class17: [Biological network analysis](https://github.com/srnath99/bimm143/blob/master/class%2017.Rmd)
-- Class 18: [Cancer genomics](https://github.com/srnath99/bimm143/blob/master/class18.Rmd)
+- Class18: [Cancer genomics](https://github.com/srnath99/bimm143/blob/master/class18.Rmd)
