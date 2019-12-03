@@ -1,6 +1,6 @@
 # Bioinformatics Class Fall 2019
 This is my work for [BIMM 143 at UC San Diego](https://bioboot.github.io/bimm143_F19/)
-##Content 
+## Content 
 - Class05: [Data exploration and visualization in R](https://github.com/srnath99/bimm143/blob/master/class5/class5.md)
 - Class06: [Why, when and how of writing your own R functions](https://github.com/srnath99/bimm143/blob/master/class6/Class6.md) 
 - Class07: [Bioinformatics R packages from CRAN and BioConductor](https://github.com/srnath99/bimm143/blob/master/class7/class7rfnxandprojects.md)
